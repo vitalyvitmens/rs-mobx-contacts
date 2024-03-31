@@ -1,15 +1,16 @@
 import { FC } from 'react'
 import { useParams } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
+import { contactsStore } from 'src/store/contactsStore'
 import { ContactCard } from 'src/components/ContactCard/ContactCard'
 import { Col, Row, Spinner } from 'react-bootstrap'
-import { useGetContactsQuery } from 'src/redux/contacts'
 
-export const ContactPage: FC = () => {
+export const ContactPage: FC = observer(() => {
   const { contactId } = useParams<{ contactId: string }>()
-  const { data: contacts, isLoading } = useGetContactsQuery()
+  const contacts = contactsStore.contacts
   const contact = contacts?.find(({ id }) => id === contactId)
 
-  if (isLoading) {
+  if (!contacts) {
     return <Spinner animation="border" />
   } else if (!contact) {
     return null
@@ -22,4 +23,4 @@ export const ContactPage: FC = () => {
       </Col>
     </Row>
   )
-}
+})

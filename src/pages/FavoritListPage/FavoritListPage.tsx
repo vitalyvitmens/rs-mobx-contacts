@@ -1,9 +1,10 @@
-import { useAppSelector } from 'src/redux/hooks'
+import { observer } from 'mobx-react-lite'
+import { favoriteStore } from 'src/store/favoriteStore'
 import { ContactCard } from 'src/components/ContactCard/ContactCard'
 import { Col, Row } from 'react-bootstrap'
 
-export const FavoritListPage = () => {
-  const favorites = useAppSelector((state) => state.favorites?.favorites)
+export const FavoritListPage = observer(() => {
+  const favorites = favoriteStore.favorites
 
   if (!favorites) {
     return null
@@ -18,4 +19,4 @@ export const FavoritListPage = () => {
       ))}
     </Row>
   )
-}
+})

@@ -1,14 +1,13 @@
+import { observer } from 'mobx-react-lite'
+import { groupStore } from 'src/store/groupStore'
 import { GroupContactsCard } from 'src/components/GroupContactsCard/GroupContactsCard'
 import { Col, Row, Spinner } from 'react-bootstrap'
-import { useGetGroupContactsQuery } from 'src/redux/groups'
 
-export const GroupListPage = () => {
-  const { data: groups, isLoading } = useGetGroupContactsQuery()
+export const GroupListPage = observer(() => {
+  const groups = groupStore.groupContacts
 
-  if (isLoading) {
+  if (!groups) {
     return <Spinner animation="border" />
-  } else if (!groups) {
-    return null
   }
 
   return (
@@ -20,4 +19,4 @@ export const GroupListPage = () => {
       ))}
     </Row>
   )
-}
+})

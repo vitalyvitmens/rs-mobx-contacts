@@ -1,47 +1,45 @@
 import { Suspense, useEffect, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import { contactsStore } from 'src/store/contactsStore'
+import { groupStore } from 'src/store/groupStore'
 import { ContactCard } from 'src/components/ContactCard/ContactCard'
-import { FilterForm, FilterFormValues } from 'src/components/FilterForm/FilterForm'
+import {
+  FilterForm,
+  FilterFormValues,
+} from 'src/components/FilterForm/FilterForm'
 import { ContactDto } from 'src/types/dto/ContactDto'
-import { GroupContactsDto } from 'src/types/dto/GroupContactsDto'
 import { Col, Row, Spinner } from 'react-bootstrap'
-import { useGetContactsQuery } from 'src/redux/contacts'
-import { useGetGroupContactsQuery } from 'src/redux/groups'
 
-export const ContactListPage = () => {
+export const ContactListPage = observer(() => {
   const [filteredContacts, setFilteredContacts] = useState<ContactDto[]>([])
-  const [groups, setGroups] = useState<GroupContactsDto[]>()
-  const { data: contacts, isLoading } = useGetContactsQuery()
-  const { data: groupsData, isLoading: isLoadingGroups } =
-    useGetGroupContactsQuery()
+  const contacts = contactsStore.contacts
+  const groups = groupStore.groupContacts
 
   useEffect(() => {
-    if (contacts && groupsData) {
+    if (contacts) {
       setFilteredContacts(contacts)
-      setGroups(groupsData)
     }
-  }, [contacts, groupsData])
+  }, [contacts, groups])
 
   const onFilter = (fv: Partial<FilterFormValues>) => {
-    let filtered = filteredContacts.filter((c) => {
-      if (fv.name && !c.name.toLowerCase().includes(fv.name.toLowerCase())) {
-        return false
-      }
-
-      if (
-        fv.groupId &&
-        !groups?.find((g) => g.id === fv.groupId)?.contactIds.includes(c.id)
-      ) {
-        return false
-      }
-
-      return true
+    const filtered = contacts.filter((contact) => {
+      const nameMatch =
+        !fv.name || contact.name.toLowerCase().includes(fv.name.toLowerCase())
+      const groupMatch =
+        !fv.groupId ||
+        groups?.some(
+          (group) =>
+            group.id === fv.groupId && group.contactIds.includes(contact.id)
+        )
+      return nameMatch && groupMatch
     })
 
     setFilteredContacts(filtered)
   }
 
-  if (isLoading || isLoadingGroups) return <Spinner animation="border" />
-  if (!groups || !filteredContacts) return null
+  if (!contacts || !groups) {
+    return <Spinner animation="border" />
+  }
 
   return (
     <Row xxl={1}>
@@ -67,4 +65,4 @@ export const ContactListPage = () => {
       </Col>
     </Row>
   )
-}
+})
