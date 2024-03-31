@@ -1,19 +1,18 @@
 import { useNavigate } from 'react-router-dom'
 import { RoutePaths } from 'src/routes/RoutePaths'
-import { addToFavorites } from 'src/redux/favorites'
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks'
+import { observer } from 'mobx-react-lite'
+import { favoriteStore } from 'src/store/favoriteStore'
 import { ContactDto } from 'src/types/dto/ContactDto'
 import { Colors } from 'src/constants/colors'
 
 export const AddToFavorites: React.FC<{
   contact: ContactDto
-}> = ({ contact }) => {
-  const dispatch = useAppDispatch()
+}> = observer(({ contact }) => {
   const navigate = useNavigate()
 
-  const favorites = useAppSelector((state) => state.favorites)
+  const favorites = favoriteStore.favorites
 
-  let isInFavorites = favorites.favorites?.find((tr) => tr.id === contact.id)
+  let isInFavorites = favorites.find((tr) => tr.id === contact.id)
     ? true
     : false
 
@@ -23,7 +22,7 @@ export const AddToFavorites: React.FC<{
         if (isInFavorites) {
           navigate(RoutePaths.Favorit)
         } else {
-          dispatch(addToFavorites(contact))
+          favoriteStore.addToFavorites(contact)
         }
       }}
     >
@@ -41,4 +40,4 @@ export const AddToFavorites: React.FC<{
       </svg>
     </div>
   )
-}
+})
