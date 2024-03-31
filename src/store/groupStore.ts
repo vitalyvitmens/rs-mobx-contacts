@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { api } from '../api'
+import { api } from '../api/api'
 import { GroupContactsDto } from 'src/types/dto/GroupContactsDto'
 
 export const groupStore = makeAutoObservable({
