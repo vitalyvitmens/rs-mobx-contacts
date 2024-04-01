@@ -23,7 +23,7 @@ export const ContactCard = observer(
         key={id}
         style={{
           textShadow: `1px 1px 1px ${Colors.black}`,
-          border: `1px solid Colors.bisque`,
+          border: `1px solid ${Colors.bisque}`,
           boxShadow: `0 -2px 5px ${Colors.black}`,
         }}
       >

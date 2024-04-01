@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { ContactDto } from 'src/types/dto/ContactDto'
 import { LOCAL_STORAGE_KEY } from 'src/constants/storageKeys'
+import { errorMessages } from 'src/constants/errorMessages'
 
 class FavoriteStore {
   favorites: ContactDto[]
@@ -17,7 +18,7 @@ class FavoriteStore {
       try {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.favorites))
       } catch (error) {
-        console.error('Failed to save to localStorage:', error)
+        console.error(errorMessages.localStorageSaveError, error)
       }
     }
   }
@@ -30,7 +31,7 @@ class FavoriteStore {
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(filteredFavorites))
     } catch (error) {
-      console.error('Failed to save to localStorage:', error)
+      console.error(errorMessages.localStorageReadError, error)
     }
   }
 }
