@@ -7,8 +7,10 @@ import { Colors } from 'src/constants/colors'
 export const RemoveFromFavorites: React.FC<{
   id: ContactDto['id']
 }> = observer(({ id }) => {
+  const handleClick = () => favoriteStore.removeFromFavorites(id)
+
   return (
-    <div onClick={() => favoriteStore.removeFromFavorites(id)}>
+    <div onClick={handleClick}>
       <svg
         className="heart"
         aria-hidden="true"

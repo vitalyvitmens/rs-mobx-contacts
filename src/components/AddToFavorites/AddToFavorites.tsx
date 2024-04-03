@@ -16,16 +16,16 @@ export const AddToFavorites: React.FC<{
     ? true
     : false
 
+  const handleClick = () => {
+    if (isInFavorites) {
+      navigate(RoutePaths.Favorit)
+    } else {
+      favoriteStore.addToFavorites(contact)
+    }
+  }
+
   return (
-    <div
-      onClick={() => {
-        if (isInFavorites) {
-          navigate(RoutePaths.Favorit)
-        } else {
-          favoriteStore.addToFavorites(contact)
-        }
-      }}
-    >
+    <div onClick={handleClick}>
       <svg
         className="heart"
         aria-hidden="true"
