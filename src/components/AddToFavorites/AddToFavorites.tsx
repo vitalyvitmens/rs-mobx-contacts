@@ -12,17 +12,16 @@ export const AddToFavorites: React.FC<{
 
   const favorites = favoriteStore.favorites
 
-  let isInFavorites = favorites.find((tr) => tr.id === contact.id)
+  let isInFavorites = favorites.find(
+    (transaction) => transaction.id === contact.id
+  )
     ? true
     : false
 
-  const handleClick = () => {
-    if (isInFavorites) {
-      navigate(RoutePaths.Favorit)
-    } else {
-      favoriteStore.addToFavorites(contact)
-    }
-  }
+  const handleClick = () =>
+    isInFavorites
+      ? navigate(RoutePaths.Favorit)
+      : favoriteStore.addToFavorites(contact)
 
   return (
     <div onClick={handleClick}>
