@@ -10,11 +10,8 @@ export const ContactPage: FC = observer(() => {
   const contacts = contactsStore.contacts
   const contact = contacts?.find(({ id }) => id === contactId)
 
-  if (!contacts) {
-    return <Spinner animation="border" />
-  } else if (!contact) {
-    return null
-  }
+  if (!contacts) return <Spinner animation="border" />
+  if (!contact) return null
 
   return (
     <Row xxl={3}>

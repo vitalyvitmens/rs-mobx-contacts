@@ -21,15 +21,17 @@ export const ContactListPage = observer(() => {
     }
   }, [contacts, groups])
 
-  const handleFilter = (fv: Partial<FilterFormValues>) => {
+  const handleFilter = (filterValues: Partial<FilterFormValues>) => {
     const filtered = contacts.filter((contact) => {
       const nameMatch =
-        !fv.name || contact.name.toLowerCase().includes(fv.name.toLowerCase())
+        !filterValues.name ||
+        contact.name.toLowerCase().includes(filterValues.name.toLowerCase())
       const groupMatch =
-        !fv.groupId ||
+        !filterValues.groupId ||
         groups?.some(
           (group) =>
-            group.id === fv.groupId && group.contactIds.includes(contact.id)
+            group.id === filterValues.groupId &&
+            group.contactIds.includes(contact.id)
         )
       return nameMatch && groupMatch
     })
@@ -54,7 +56,7 @@ export const ContactListPage = observer(() => {
       </Col>
       <Col>
         <Row xxl={4} className="g-4">
-          {filteredContacts.map((contact) => (
+          {filteredContacts?.map((contact) => (
             <Col key={contact.id}>
               <Suspense fallback={<Spinner animation="border" />}>
                 <ContactCard contact={contact} withLink />
