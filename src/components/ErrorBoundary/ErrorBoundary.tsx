@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react'
 import { Colors } from 'src/constants/colors'
+import { errorMessages } from 'src/constants/errorMessages'
 import { Card } from 'react-bootstrap'
 
 interface ErrorBoundaryState {
@@ -20,7 +21,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    alert(`Error message from getDerivedStateFromError: ${error.message}`)
+    alert(errorMessages.getDerivedStateFromError(error))
 
     return {
       hasError: true,
@@ -28,9 +29,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    alert(
-      `Error message from componentDidCatch: ${error.message}\nError info from componentDidCatch: ${errorInfo.componentStack}`
-    )
+    alert(errorMessages.componentDidCatch(error, errorInfo))
   }
 
   render() {

@@ -1,15 +1,16 @@
 import React from 'react'
-import { removeFromFavorites } from 'src/redux/favorites'
-import { useAppDispatch } from 'src/redux/hooks'
+import { observer } from 'mobx-react-lite'
+import { favoriteStore } from 'src/store/favoriteStore'
 import { ContactDto } from 'src/types/dto/ContactDto'
 import { Colors } from 'src/constants/colors'
 
 export const RemoveFromFavorites: React.FC<{
   id: ContactDto['id']
-}> = ({ id }) => {
-  const dispatch = useAppDispatch()
+}> = observer(({ id }) => {
+  const handleClick = () => favoriteStore.removeFromFavorites(id)
+
   return (
-    <div onClick={() => dispatch(removeFromFavorites(id))}>
+    <div onClick={handleClick}>
       <svg
         className="heart"
         aria-hidden="true"
@@ -24,4 +25,4 @@ export const RemoveFromFavorites: React.FC<{
       </svg>
     </div>
   )
-}
+})

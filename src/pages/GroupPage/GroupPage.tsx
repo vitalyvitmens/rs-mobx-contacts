@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
+import { contactsStore } from 'src/store/contactsStore'
+import { groupStore } from 'src/store/groupStore'
 import { ContactCard } from 'src/components/ContactCard/ContactCard'
 import { GroupContactsCard } from 'src/components/GroupContactsCard/GroupContactsCard'
 import { GroupContactsDto } from 'src/types/dto/GroupContactsDto'
-import { Col, Row, Spinner } from 'react-bootstrap'
-import { useGetContactsQuery } from 'src/redux/contacts'
-import { useGetGroupContactsQuery } from 'src/redux/groups'
+import { Col, Row } from 'react-bootstrap'
 
-export const GroupPage = () => {
+export const GroupPage = observer(() => {
   const { groupId } = useParams<{ groupId: string }>()
   const [groupContacts, setGroupContacts] = useState<GroupContactsDto>()
-  const { data: contacts, isLoading } = useGetContactsQuery()
-  const { data: groupContactsData, isLoading: isLoadingGroups } =
-    useGetGroupContactsQuery()
+  const contacts = contactsStore.contacts
+  const groupContactsData = groupStore.groupContacts
 
   useEffect(() => {
     const currentGroupContacts = groupContactsData?.find(
@@ -22,7 +22,6 @@ export const GroupPage = () => {
     setGroupContacts(currentGroupContacts)
   }, [groupId, groupContactsData])
 
-  if (isLoading || isLoadingGroups) return <Spinner animation="border" />
   if (!groupContacts || !contacts) return null
 
   return (
@@ -45,4 +44,4 @@ export const GroupPage = () => {
       </Col>
     </Row>
   )
-}
+})

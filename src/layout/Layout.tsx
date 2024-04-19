@@ -1,5 +1,7 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { contactsStore } from 'src/store/contactsStore'
+import { groupStore } from 'src/store/groupStore'
 import { Breadcrumbs } from 'src/components/Breadcrumbs/Breadcrumbs'
 import { MainMenu } from 'src/components/MainMenu/MainMenu'
 import { ComponentWithSuspense } from 'src/components/ComponentWithSuspense/ComponentWithSuspense'
@@ -8,6 +10,11 @@ import { Col, Container, Row } from 'react-bootstrap'
 export const Layout = () => {
   const location = useLocation()
   const pathNames = location.pathname.split('/').filter((x) => x)
+
+  useEffect(() => {
+    contactsStore.get()
+    groupStore.get()
+  }, [])
 
   return (
     <Container>
